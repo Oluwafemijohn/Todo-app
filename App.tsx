@@ -1,13 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import TodoList from './screens/todo-list';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import {RecoilRoot} from 'recoil';
+import AppNavigator from './screens/navigations';
+
 
 export default function App() {
+  const queryCLient = new QueryClient()
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <QueryClientProvider client={queryCLient}>
+      <RecoilRoot>
+        <AppNavigator />
+      </RecoilRoot>
+    </QueryClientProvider>
   );
 }
 
