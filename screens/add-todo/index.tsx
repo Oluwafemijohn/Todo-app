@@ -8,10 +8,36 @@ import { END_POINT } from "../../constants";
 export default function AddTodoScreen(){
 
     const [state, setState] = useState({title: "", description:""});
+    const [isLoading, setIsLoading] = useState(false)
 
+    // Olden style of making network call 
     const handleSubmitTodo = () => {
         axios.post(`${END_POINT}?ownerEmail=solomon@gmail.com`, state)
+        .then((response)=>{
+            console.log(response.data)
+            setIsLoading(false)
+        }).catch(
+            (error)=>{
+                setIsLoading(false) 
+                console.log(error)
+            }
+        )
+        setIsLoading(true)
     }
+
+    // New way of making network call
+    const handleSubmitTodo2 = async () => {
+        try {
+            setIsLoading(true)
+           const response = await  axios.post(`${END_POINT}?ownerEmail=solomon@gmail.com`, state)
+           console.log(response.data)
+           setIsLoading(false)
+        } catch (error) {
+            setIsLoading(false) 
+        }
+    }
+
+
 
     return(
         <View style={styles.container}>
@@ -23,10 +49,14 @@ export default function AddTodoScreen(){
             onChangeText={(description)=>{setState({...state, description})}}
             />
             <Button title="submit" onPress={()=>{
-            handleSubmitTodo()
+            handleSubmitTodo2()
             }}
             color="green" />
-            {<ActivityIndicator color="red" />}
+            {/* tenarry operator */}
+            {isLoading? <ActivityIndicator color="red" />: null}
+            {/* Conditional render */}
+            {/* {isLoading && <ActivityIndicator color="red" />}  */}
+
         </View>
     )
 }
