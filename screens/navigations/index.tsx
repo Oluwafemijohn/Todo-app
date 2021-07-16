@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Screens from "../screens";
 import { Ionicons } from '@expo/vector-icons';
+import {widthPercentageToDP as WP, heightPercentageToDP as HP} from "react-native-responsive-screen";
+
 
 const TodoStack = createStackNavigator();
 export default function AppNavigator() {
@@ -14,7 +16,7 @@ export default function AppNavigator() {
         options={(data)=>({
           headerTitle: 'Todo List',
           headerRight:() =>(
-            <Ionicons name="add-circle" size={35} color="green" 
+            <Ionicons name="add-circle" size={WP(5)} color="green" 
             onPress={()=>{
               data.navigation.push("AddTodoScreen")
             }}

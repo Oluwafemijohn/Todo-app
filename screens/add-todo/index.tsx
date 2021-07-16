@@ -4,6 +4,9 @@ import { useState } from "react";
 import {View, Text, StyleSheet, Button, ActivityIndicator} from "react-native"
 import { TextInput } from "react-native-gesture-handler";
 import { END_POINT } from "../../constants";
+import {widthPercentageToDP as WP, heightPercentageToDP as HP} from "react-native-responsive-screen";
+import showToast from "../../components/toast";
+
 
 export default function AddTodoScreen(){
 
@@ -15,20 +18,21 @@ export default function AddTodoScreen(){
         try {
             setIsLoading(true)
            const response = await  axios.post(`${END_POINT}?ownerEmail=solomon@gmail.com`, state)
-           console.log(response.data)
+           showToast(response.data.message)
            setIsLoading(false)
         } catch (error) {
+            showToast(error)
             setIsLoading(false) 
         }
     }
 
-
-
     return(
         <View style={styles.container}>
 
-            <TextInput placeholder="Please enter title" style={styles.input}
+            <TextInput 
+             placeholder="Please enter title" style={styles.input}
             onChangeText={(title)=>{setState({...state, title})}}
+            selectTextOnFocus= {true}
             />
             <TextInput placeholder="Please enter description" style={styles.input}
             onChangeText={(description)=>{setState({...state, description})}}
@@ -53,8 +57,11 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     input:{
-        margin: 10,
+        margin: HP(1),
         borderRadius: 1,
         borderColor: "red"
+    },
+    inputFocus:{
+        borderStartColor: "red"
     }
 })

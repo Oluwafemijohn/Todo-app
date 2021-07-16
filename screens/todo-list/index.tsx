@@ -1,33 +1,62 @@
-import React from "react";
-import {FlatList, View, Text, StyleSheet} from "react-native";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import React, { useEffect, useState } from "react";
+import {FlatList, View, Text, StyleSheet, ActivityIndicator} from "react-native";
+import { useRecoilState } from "recoil";
 import { todoState } from "../store/todo";
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import {widthPercentageToDP as WP, heightPercentageToDP as HP} from "react-native-responsive-screen";
+import dimensions from "../../constants/dimensions";
+import axios from "axios";
+import { END_POINT } from "../../constants";
+import showToast from "../../components/toast";
+// import colors from 'constants'
 
 interface PropType{};
 export default function TodoList(props:PropType){
-    // const [globalTodo, setGLobalTodo] = useSetRecoilState(todoState)
-    const todoGlobalState = useRecoilValue(todoState)
+    const [globalTodo, setGlobalTodo] = useRecoilState(todoState)
+    // const todoGlobalState = useRecoilValue(todoState)
+    // const [state, setState] = useState({title: "", description:""});
+    const [isLoading, setIsLoading] = useState(false)
+    const [state, setState] = useState([])
+
+    const fetchTodo = async () => {
+        try {
+            setIsLoading(true)
+           const response = await  axios.get(`${END_POINT}?ownerEmail=solomon@gmail.com`)
+           console.log(response.data)
+           setGlobalTodo(response.data.payload)
+           showToast(response.data.message)
+           console.log(response.data)
+           setIsLoading(false)
+        } catch (error) {
+            showToast(error)
+            setIsLoading(false) 
+        }
+    }
+
+    useEffect(()=>{
+        fetchTodo()
+    }, [])
+
     return(
         <View style={styles.container}>
              <FlatList 
              contentContainerStyle={styles.contentContainer}
-             data={todoGlobalState} renderItem={(renderTodo)=>{
+             data={globalTodo} renderItem={(renderTodo)=>{
                  return(
                      <View style={styles.itemContainer}>
                          <Text style={styles.item}>{renderTodo.item.title}</Text>
                          <View style={styles.actionStyle}>
-                         <Feather name="edit" size={24} color="black" />
-                         <MaterialIcons name="delete" size={24} color="black" />
+                         <Feather name="edit" size={WP(6)} color="black" />
+                         <MaterialIcons name="delete" size={WP(6)} color="black" />
                          </View>
                      </View>
                  )
              }} 
-             ListEmptyComponent={()=> <Text style={{marginTop: 40, fontSize: 18}}>List is empty</Text>} />
+             ListEmptyComponent={()=> isLoading? <ActivityIndicator color="red" />: <Text style={{marginTop: HP(8), fontSize: WP(7)}}>List is empty</Text>} />
         </View>
        
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -40,8 +69,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     item:{
-        fontSize: 24,
-        color: 'red',
+        fontSize: WP(5),
         alignItems: "center"
     },
     itemContainer:{
@@ -49,15 +77,15 @@ const styles = StyleSheet.create({
         justifyContent: "center", 
         alignItems: "center",
         borderRadius: 2,
-        width: 350,
+        width: WP(dimensions.todoListPadding),
         padding:3,
+        marginVertical: WP(2)
     },
     actionStyle:{
         padding: 2,
         flexDirection: "row",
         justifyContent: "space-between",
-        height: 30,
-        width: 345,
-        borderWidth:1, 
+        // height: HP(dimensions.actionStyleHeight),
+        width: WP(dimensions.todoListPadding),
     }
 })
