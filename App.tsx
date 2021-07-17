@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import TodoList from './screens/todo-list';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {RecoilRoot} from 'recoil';
-import AppNavigator from './screens/navigations';
+import AppNavigator from './navigations';
 
 
 export default function App() {

@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import Screens from "../screens";
+import Screens from "../screens/screens";
 import { Ionicons } from '@expo/vector-icons';
 import {widthPercentageToDP as WP, heightPercentageToDP as HP} from "react-native-responsive-screen";
 

@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { TODO_ATOM_KEY } from "../../constants";
+import { TODO_ATOM_KEY } from "../constants";
 import { ITodo } from "./types";
 
 export const todoState = atom<ITodo[]>({
