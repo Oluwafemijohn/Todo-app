@@ -1,5 +1,7 @@
 # Todo-app
-An app to store your todo list built with react-native
+An app to store your todo list built with react-native.
+
+Please check the Feature_responsiveness-and-get-network-call branch to see the updated version
 
 Technologies used are:
 * expo
