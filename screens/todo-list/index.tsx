@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FlatList,
   View,
@@ -12,31 +13,48 @@ import {
   heightPercentageToDP as HP,
 } from "react-native-responsive-screen";
 import dimensions from "../../constants/dimensions";
-import { fetchTodo } from "../../server";
+import { fetchTodo, useDeleteTodo } from "../../server";
+import showToast from "../../components/toast";
 
 
-interface PropType {}
-export default function TodoList(props: PropType) {
+
+// interface PropType {}
+export default function TodoList({navigation}) {
   const {data, isLoading } = fetchTodo()
+  const {mutateAsync} = useDeleteTodo()
+
+  const handleDelete = async (title:string) => {
+    try {
+      const response = await mutateAsync(title)
+      showToast(response.data.message);
+      // setClearTextInput("");
+    } catch (error) {
+      showToast(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <FlatList
         contentContainerStyle={styles.contentContainer}
         data={data?.data.payload}
-        keyExtractor={(_, index) => `${index}`}
+        keyExtractor={(ITodo) => ITodo.title}
         renderItem={(renderTodo) => {
           return (
             <View style={styles.itemContainer}>
               <Text style={styles.item}>{renderTodo.item.title}</Text>
               <View style={styles.actionStyle}>
-                <Feather name="edit" size={WP(6)} color="blue" />
+                <Feather name="edit" size={WP(6)} color="blue"
+                onPress={()=>
+                    navigation.navigate('EditTodoScreen', renderTodo.item)
+                }
+                />
                 <MaterialIcons
                   name="delete"
                   size={WP(6)}
                   color="red"
                   onPress={() => {
-                    // handleDelete()
+                    handleDelete(renderTodo.item.title)
                   }}
                 />
               </View>

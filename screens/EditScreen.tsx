@@ -4,23 +4,24 @@ import { useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { Button } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
-import { END_POINT } from "../../constants";
 import {
   widthPercentageToDP as WP,
   heightPercentageToDP as HP,
 } from "react-native-responsive-screen";
-import showToast from "../../components/toast";
-import { usePostTodo } from "../../server";
+import showToast from "../components/toast";
+import { useUpdateTodo } from "../server";
 
-export default function AddTodoScreen() {
-  const [state, setState] = useState({ title: "", description: "" });
+export default function EditTodoScreen({ route }) {
+  const { title, description } = route.params
+  const [state, setState] = useState({titleToUpdate: title, title: "", description: "" });
+
   // Still working on this 
   // const [clearTextInput, setClearTextInput] = useState("");
 
-  const {isLoading, mutateAsync} = usePostTodo()
+  const {isLoading, mutateAsync} = useUpdateTodo()
 
   // New way of making network call
-  const handleSubmitTodo = async () => {
+  const handleSubmitUpdatedTodo = async () => {
     try {
       const response = await mutateAsync(state)
       showToast(response.data.message);
@@ -32,7 +33,7 @@ export default function AddTodoScreen() {
 
   return (
     <View style={styles.container}>
-      <View >
+      <View>
         <Text style={styles.inputHeader}>Title</Text>
         <TextInput
           placeholder="Please enter title"
@@ -40,9 +41,11 @@ export default function AddTodoScreen() {
           allowFontScaling
           onChangeText={(title) => {
             setState({ ...state, title });
+            {console.log(title)}
           }}
           selectTextOnFocus={true}
-         
+          // value={clearTextInput}
+          value={title}
         />
         <Text style={styles.inputHeader}>Description</Text>
         <TextInput
@@ -51,14 +54,15 @@ export default function AddTodoScreen() {
           onChangeText={(description) => {
             setState({ ...state, description });
           }}
+          value={description}
         />
       </View>
       <Button
         buttonStyle={styles.button}
         title="submit"
         onPress={() => {
-          handleSubmitTodo()
-          setState({ title: "", description: "" })
+          handleSubmitUpdatedTodo()
+          // setState({titleToUpdate: title, title: "", description: "" })
         }}
       />
       {isLoading ? <ActivityIndicator color="red" /> : null}
@@ -85,6 +89,7 @@ const styles = StyleSheet.create({
     width: WP(60),
     fontSize: WP(4),
   },
+
   button: {
     margin: HP(2),
     height: HP(5),

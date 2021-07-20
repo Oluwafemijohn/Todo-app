@@ -8,3 +8,9 @@ export interface ITodoResponseType{
     payload:ITodo[],
     statusCode: number
 }
+
+export interface ITodoUpdateType{
+    titleToUpdate:string,
+    title:string,
+    description:string 
+}
