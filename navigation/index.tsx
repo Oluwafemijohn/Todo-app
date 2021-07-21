@@ -46,6 +46,13 @@ export default function AppNavigator() {
             headerTitle: "Edit Todo",
           })}
         />
+        <TodoStack.Screen
+          name="TodoDetail"
+          component={Screens.TodoDetail}
+          options={(data) => ({
+            headerTitle: "Todo Details",
+          })}
+        />
       </TodoStack.Navigator>
     </NavigationContainer>
   );

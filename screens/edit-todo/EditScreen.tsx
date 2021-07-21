@@ -8,24 +8,20 @@ import {
   widthPercentageToDP as WP,
   heightPercentageToDP as HP,
 } from "react-native-responsive-screen";
-import showToast from "../components/toast";
-import { useUpdateTodo } from "../server";
+import showToast from "../../components/toast";
+import { useUpdateTodo } from "../../server";
 
 export default function EditTodoScreen({ route }) {
   const { title, description } = route.params
-  const [state, setState] = useState({titleToUpdate: title, title: "", description: "" });
-
-  // Still working on this 
-  // const [clearTextInput, setClearTextInput] = useState("");
+  const [state, setState] = useState({ title: title ? title : "" , description: description ? title : ""});
 
   const {isLoading, mutateAsync} = useUpdateTodo()
 
-  // New way of making network call
+  //New way of making network call
   const handleSubmitUpdatedTodo = async () => {
     try {
-      const response = await mutateAsync(state)
+      const response = await mutateAsync({...state, titleToUpdate: title})
       showToast(response.data.message);
-      // setClearTextInput("");
     } catch (error) {
       showToast(error);
     }
@@ -41,11 +37,8 @@ export default function EditTodoScreen({ route }) {
           allowFontScaling
           onChangeText={(title) => {
             setState({ ...state, title });
-            {console.log(title)}
           }}
-          selectTextOnFocus={true}
-          // value={clearTextInput}
-          value={title}
+          value={state.title}
         />
         <Text style={styles.inputHeader}>Description</Text>
         <TextInput
@@ -54,7 +47,7 @@ export default function EditTodoScreen({ route }) {
           onChangeText={(description) => {
             setState({ ...state, description });
           }}
-          value={description}
+          value={state.description}
         />
       </View>
       <Button
@@ -62,7 +55,6 @@ export default function EditTodoScreen({ route }) {
         title="submit"
         onPress={() => {
           handleSubmitUpdatedTodo()
-          // setState({titleToUpdate: title, title: "", description: "" })
         }}
       />
       {isLoading ? <ActivityIndicator color="red" /> : null}

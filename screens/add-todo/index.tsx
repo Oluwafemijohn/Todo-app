@@ -24,7 +24,7 @@ export default function AddTodoScreen() {
     try {
       const response = await mutateAsync(state)
       showToast(response.data.message);
-      // setClearTextInput("");
+      setState({ title: "", description: "" });
     } catch (error) {
       showToast(error);
     }
@@ -42,7 +42,7 @@ export default function AddTodoScreen() {
             setState({ ...state, title });
           }}
           selectTextOnFocus={true}
-         
+         value={state.title}
         />
         <Text style={styles.inputHeader}>Description</Text>
         <TextInput
@@ -51,6 +51,7 @@ export default function AddTodoScreen() {
           onChangeText={(description) => {
             setState({ ...state, description });
           }}
+          value={state.description}
         />
       </View>
       <Button
@@ -58,7 +59,7 @@ export default function AddTodoScreen() {
         title="submit"
         onPress={() => {
           handleSubmitTodo()
-          setState({ title: "", description: "" })
+          // setState({ title: "", description: "" })
         }}
       />
       {isLoading ? <ActivityIndicator color="red" /> : null}

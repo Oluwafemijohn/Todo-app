@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -38,11 +39,15 @@ export default function TodoList({navigation}) {
       <FlatList
         contentContainerStyle={styles.contentContainer}
         data={data?.data.payload}
-        keyExtractor={(ITodo) => ITodo.title}
+        keyExtractor={(ITodo, index) => `${index}`}
         renderItem={(renderTodo) => {
           return (
             <View style={styles.itemContainer}>
+              <TouchableOpacity onPress={()=>{
+                navigation.push('TodoDetail', renderTodo.item)
+              }}>
               <Text style={styles.item}>{renderTodo.item.title}</Text>
+              </TouchableOpacity>
               <View style={styles.actionStyle}>
                 <Feather name="edit" size={WP(6)} color="blue"
                 onPress={()=>
@@ -88,6 +93,7 @@ const styles = StyleSheet.create({
     fontSize: WP(5),
     alignItems: "center",
     width: WP(70),
+    padding: WP(2),
   },
   itemContainer: {
     backgroundColor: "white",
@@ -95,12 +101,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 2,
     width: WP(dimensions.todoListPadding),
-    padding: 3,
+    padding: WP(0.5),
     marginVertical: WP(2),
     flexDirection: "row",
+
   },
   actionStyle: {
-    padding: 8,
+    padding: WP(1),
     flexDirection: "row",
     justifyContent: "space-between",
     width: WP(18),
