@@ -11,9 +11,9 @@ import {
 import showToast from "../../components/toast";
 import { useUpdateTodo } from "../../server";
 
-export default function EditTodoScreen({ route }) {
-  const { title, description } = route.params
-  const [state, setState] = useState({ title: title ? title : "" , description: description ? title : ""});
+export default function EditTodoScreen(props:any) {
+  const { title, description } = props.route.params
+  const [state, setState] = useState({ title: title ? title : "" , description: description ? description : ""});
 
   const {isLoading, mutateAsync} = useUpdateTodo()
 

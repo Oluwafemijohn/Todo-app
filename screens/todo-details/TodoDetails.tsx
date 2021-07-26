@@ -3,8 +3,8 @@ import {View, Text, StyleSheet} from 'react-native';
 import {widthPercentageToDP as WP, heightPercentageToDP as HP} from 'react-native-responsive-screen'
 
 
-export default function TodoDetail({route}){
-    const {title, description} = route.params;
+export default function TodoDetail(props:any){
+    const {title, description} = props.route.params;
 
     return(
         <View style={styles.container}>

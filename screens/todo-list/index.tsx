@@ -20,7 +20,7 @@ import showToast from "../../components/toast";
 
 
 // interface PropType {}
-export default function TodoList({navigation}) {
+export default function TodoList(props:any) {
   const {data, isLoading } = fetchTodo()
   const {mutateAsync} = useDeleteTodo()
 
@@ -44,14 +44,14 @@ export default function TodoList({navigation}) {
           return (
             <View style={styles.itemContainer}>
               <TouchableOpacity onPress={()=>{
-                navigation.push('TodoDetail', renderTodo.item)
+                props.navigation.push('TodoDetail', renderTodo.item)
               }}>
               <Text style={styles.item}>{renderTodo.item.title}</Text>
               </TouchableOpacity>
               <View style={styles.actionStyle}>
                 <Feather name="edit" size={WP(6)} color="blue"
                 onPress={()=>
-                    navigation.navigate('EditTodoScreen', renderTodo.item)
+                  props.navigation.navigate('EditTodoScreen', renderTodo.item)
                 }
                 />
                 <MaterialIcons
