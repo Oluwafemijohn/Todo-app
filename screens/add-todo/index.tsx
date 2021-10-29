@@ -26,7 +26,7 @@ export default function AddTodoScreen() {
       showToast(response.data.message);
       setState({ title: "", description: "" });
     } catch (error) {
-      showToast(error);
+      showToast(error as string);
     }
   };
 

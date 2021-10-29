@@ -21,7 +21,7 @@ import showToast from "../../components/toast";
 
 // interface PropType {}
 export default function TodoList(props:any) {
-  const {data, isLoading } = fetchTodo()
+  const {data, isLoading, error } = fetchTodo()
   const {mutateAsync} = useDeleteTodo()
 
   const handleDelete = async (title:string) => {
@@ -30,7 +30,7 @@ export default function TodoList(props:any) {
       showToast(response.data.message);
       // setClearTextInput("");
     } catch (error) {
-      showToast(error);
+      showToast(error as string);
     }
   };
 
