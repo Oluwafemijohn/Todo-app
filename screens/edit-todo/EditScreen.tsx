@@ -23,7 +23,7 @@ export default function EditTodoScreen(props:any) {
       const response = await mutateAsync({...state, titleToUpdate: title})
       showToast(response.data.message);
     } catch (error) {
-      showToast(error);
+      showToast(error as string);
     }
   };
 
