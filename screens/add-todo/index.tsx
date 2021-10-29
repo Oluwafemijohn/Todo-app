@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
-import {View, Text, StyleSheet, Button, ActivityIndicator} from "react-native"
+import {View, StyleSheet, Button, ActivityIndicator} from "react-native"
 import { TextInput } from "react-native-gesture-handler";
 import { END_POINT } from "../../constants";
 
